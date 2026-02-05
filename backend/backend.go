@@ -107,12 +107,20 @@ func main() {
 		v1.GetAllTables(c, db)
 	})
 
+	r.GET("/users", func(c *gin.Context) {
+		v1.GetUsers(c, db)
+	})
+
 	r.GET("/work-experiences", func(c *gin.Context) {
 		v1.GetWorkExperiences(c, db)
 	})
 
 	r.PUT("/work-experiences", func(c *gin.Context) {
 		v1.EditWorkExperience(c, db)
+	})
+
+	r.PUT("/users", func(c *gin.Context) {
+		v1.EditUser(c, db)
 	})
 
 	r.Run()

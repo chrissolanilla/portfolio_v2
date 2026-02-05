@@ -45,7 +45,8 @@
     endDate = normalizeDate(data.end_date);
   }
 
-  async function submitForm() {
+  async function submitForm(event) {
+    event.preventDefault();
     error = "";
     success = "";
     loading = true;
@@ -116,29 +117,25 @@
   <Form
     submitForm={submitForm}
     title={"Add Work Experience"}
+    editMode={editMode}
+    editHook={editHook}
   >
-    {#if editMode}
-      <div>
-        <a class="text-fuchsia-950"
-          onclick={() => editHook(null)}
-        >
-          you are now in edit mode. i love you. click this to exit edit mode
-        </a>
-      </div>
-    {/if}
     <Input
       label={"Title"}
       bind:value={title}
+      required={true}
     />
 
     <Input
       label={"Workplace"}
       bind:value={workplace}
+      required={true}
     />
 
     <BigInput
       label={"Description"}
       bind:value={description}
+      required={true}
     />
 
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">

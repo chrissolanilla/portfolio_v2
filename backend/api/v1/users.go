@@ -49,3 +49,77 @@ func AddUser(c *gin.Context, db *sql.DB) {
 	
 	c.JSON(http.StatusCreated, user)
 }
+
+func GetUsers(c *gin.Context, db *sql.DB) {
+	rows, err := db.Query(`
+		SELECT id, name, password FROM users;
+	`)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	defer rows.Close()
+
+	var users []data.User
+
+	for rows.Next() {
+		var u data.User
+
+		err = rows.Scan(
+			&u.ID,
+			&u.Name,
+			&u.Password,
+		)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+
+		users = append(users, u)
+	}
+
+	c.JSON(http.StatusOK, users)
+}
+
+func EditUser(c *gin.Context, db *sql.DB) {
+	var u data.User
+
+	if err := c.ShouldBindJSON(&u); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	hashedPassword, err := utils.HashPassword(u.Password)
+
+	query := `
+		UPDATE users
+		SET name = $1,
+			password = $2
+		WHERE id = $3
+	`
+
+	_, err = db.Exec(
+		query,
+		u.Name,
+		hashedPassword,
+		u.ID,
+	)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusCreated, u)
+}
