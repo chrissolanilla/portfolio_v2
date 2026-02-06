@@ -5,7 +5,8 @@ import (
 	"encoding/base64"
 	"strings"
 	"context"
-
+	"errors"
+	"regexp"
 
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"golang.org/x/crypto/bcrypt"
@@ -52,4 +53,15 @@ func UploadBase64Image(
 	})
 
 	return err
+}
+
+func ExtractUUIDFromImageURL(url string) (string, error) {
+	re := regexp.MustCompile(`([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}_image)`)
+	matches := re.FindStringSubmatch(url)
+
+	if len(matches) < 2 {
+		return "", errors.New("uuid not found in image URL")
+	}
+
+	return matches[1], nil
 }
