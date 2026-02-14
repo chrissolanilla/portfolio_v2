@@ -49,5 +49,4 @@ services:
 
 volumes:
   postgres_data:
-  rustfs_data:
 
