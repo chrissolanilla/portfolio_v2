@@ -19,7 +19,11 @@
           after:-z-10
           ${projectBgClass}`}
 >
-  <img src={project.image} class="w-full h-40 bg-gray-100 rounded-lg border-2 border-black"/>
+  <img
+    src={project.image}
+    alt={project.name}
+    class="block max-w-full h-auto rounded-lg border-2 border-black"
+  />
   <h3 class="text-lg font-semibold mt-4 text-gray-900 leading-tight">
     {project.name}
   </h3>
