@@ -16,8 +16,9 @@
   });
 </script>
 
-<section class="flex flex-wrap justify-center py-8">
-  <table class="border-collapse border border-black max-w-7xl min-w-[500px] bg-skills">
+<section class="flex flex-wrap justify-center p-1">
+<div class="w-full overflow-x-auto">
+  <table class="border-collapse border border-black max-w-7xl min-w-full bg-skills">
     <thead class="bg-gray-100 text-center">
       <tr>
         <th class="border border-black px-4 py-2 text-center">
@@ -39,12 +40,13 @@
       </tr>
     </thead>
     <tbody class="text-center">
-      {#each filteredSkills as skill} 
+      {#each filteredSkills as skill}
         <tr>
           <td class="border border-black px-4 py-2">{skill.name}</td>
         </tr>
       {/each}
     </tbody>
   </table>
+</div>
 </section>
 
